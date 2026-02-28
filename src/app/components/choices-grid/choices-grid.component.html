@@ -1,0 +1,28 @@
+<div class="choices-grid" *ngIf="choices.length; else noChoices">
+  <button
+    type="button"
+    class="choice-card"
+    *ngFor="let choice of choices; let i = index"
+    [disabled]="isDisabled(choice)"
+    [class.used]="isUsed(choice)"
+    [class.fail]="choice.isFailure"
+    [class.win]="choice.isWin"
+    (click)="select(choice)"
+  >
+    <div class="choice-index mono-terminal">{{ i + 1 }}</div>
+    <div class="choice-text">{{ choice.option }}</div>
+    <div class="hint-row mono-terminal" *ngIf="showHints">
+      <span>Success est:</span>
+      <span>{{ probabilities[choice.option] }}%</span>
+    </div>
+    <div class="hint-text mono-terminal" *ngIf="showHints && choice.hint">
+      {{ choice.hint }}
+    </div>
+  </button>
+</div>
+
+<ng-template #noChoices>
+  <div class="terminal-note mono-terminal">
+    No actions available. Awaiting debrief…
+  </div>
+</ng-template>

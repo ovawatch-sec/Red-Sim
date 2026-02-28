@@ -1,0 +1,75 @@
+:root {
+  --matrix-green: #00ff00;
+  --neon-green: #39ff14;
+  --dark-bg: #0a0a0a;
+  --void-bg: #000000;
+  --danger: #ff4444;
+  --warning: #ffaa00;
+  --text: #00ff00;
+  --neon-glow: 0 0 10px rgba(0, 255, 0, 0.35);
+  --danger-glow: 0 0 10px rgba(255, 68, 68, 0.3);
+}
+
+.mono-terminal {
+  font-family: "Share Tech Mono", "Courier New", monospace;
+}
+
+.green-glow {
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.25);
+}
+
+.matrix-layer {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at top, rgba(0,255,0,0.05), transparent 45%), #000;
+}
+
+.matrix-layer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,0,0.02) 1px, transparent 1px);
+  background-size: 100% 24px, 24px 100%;
+  pointer-events: none;
+  animation: gridDrift 18s linear infinite;
+  opacity: 0.5;
+}
+
+.matrix-layer::after {
+  content: "";
+  position: absolute;
+  inset: -100% 0 0 0;
+  background: linear-gradient(180deg, transparent, rgba(0,255,0,0.06), transparent);
+  pointer-events: none;
+  animation: matrixRain 13s linear infinite;
+}
+
+@keyframes matrixRain {
+  from { transform: translateY(-35%); }
+  to { transform: translateY(65%); }
+}
+
+@keyframes gridDrift {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 0 24px, 24px 0; }
+}
+
+.cursor-blink::after {
+  content: "_";
+  margin-left: 2px;
+  animation: cursorBlink 1s step-end infinite;
+}
+
+@keyframes cursorBlink {
+  50% { opacity: 0; }
+}
+
+.panel {
+  border: 1px solid rgba(0,255,0,0.45);
+  background: rgba(10, 10, 10, 0.85);
+  box-shadow: var(--neon-glow);
+  border-radius: 14px;
+  backdrop-filter: blur(4px);
+}

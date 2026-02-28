@@ -1,33 +1,41 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: "class",
   content: ["./src/**/*.{html,ts}"],
   theme: {
     extend: {
-      fontFamily: {
-        inter: ["Inter", "sans-serif"],
-        firacode: ["Fira Code", "monospace"],
+      colors: {
+        matrix: "#00ff00",
+        neon: "#39ff14",
+        void: "#000000",
+        deep: "#0a0a0a",
+        fail: "#ff4444",
+        warn: "#ffaa00",
       },
-      animation: {
-        glow: "glow 2s ease-in-out infinite alternate",
-        float: "float 6s ease-in-out infinite",
+      boxShadow: {
+        neon: "0 0 12px rgba(0,255,0,.35)",
+        danger: "0 0 12px rgba(255,68,68,.35)",
+      },
+      fontFamily: {
+        mono: ["Source Code Pro", "Courier New", "monospace"],
+        terminal: ["Share Tech Mono", "Courier New", "monospace"],
       },
       keyframes: {
-        glow: {
-          from: {
-            "text-shadow":
-              "0 0 5px #fff, 0 0 10px #fff, 0 0 15px #10B981, 0 0 20px #10B981",
-          },
-          to: {
-            "text-shadow":
-              "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #10B981, 0 0 40px #10B981",
-          },
+        blink: {
+          "0%, 49%": { opacity: "1" },
+          "50%, 100%": { opacity: "0" }
         },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
+        glitch: {
+          "0%,100%": { transform: "translate(0)" },
+          "20%": { transform: "translate(-1px, 1px)" },
+          "40%": { transform: "translate(1px, -1px)" },
+          "60%": { transform: "translate(-1px, 0)" },
+          "80%": { transform: "translate(1px, 0)" }
+        }
       },
+      animation: {
+        blink: "blink 1s step-end infinite",
+        glitch: "glitch .25s linear 3",
+      }
     },
   },
   plugins: [],

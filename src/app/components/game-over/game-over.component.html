@@ -1,0 +1,36 @@
+<section class="panel game-over" [class.fail]="mode==='fail'" [class.win]="mode==='win'" [class.partial]="mode==='partial'">
+  <div class="title mono-terminal" [class.glitch]="mode==='fail'">
+    {{ mode==='win' ? 'MISSION COMPLETE' : mode==='partial' ? 'PARTIAL SUCCESS' : 'MISSION FAILED' }}
+  </div>
+
+  <p class="summary">{{ question?.text }}</p>
+
+  <div class="flag mono-terminal" *ngIf="question?.flag">FLAG: {{ question?.flag }}</div>
+
+  <div class="stats" *ngIf="stats">
+    <div><span>Path complexity:</span> <strong>{{ stats.pathComplexity }}</strong></div>
+    <div><span>Choices made:</span> <strong>{{ stats.pathTaken.length }}</strong></div>
+    <div><span>Time:</span> <strong>{{ stats.timeElapsed }}s</strong></div>
+    <div><span>Attempts:</span> <strong>{{ stats.attempts }}</strong></div>
+  </div>
+
+  <div class="badges" *ngIf="stats?.achievements?.length">
+    <span class="badge" *ngFor="let a of stats?.achievements">{{ a }}</span>
+  </div>
+
+  <div class="actions">
+    <button mat-flat-button color="primary" (click)="exportPath.emit()">Export Path</button>
+    <button mat-flat-button color="warn" (click)="restart.emit()">Restart Mission</button>
+  </div>
+
+  <div class="continue-actions" *ngIf="!isTerminal && question?.choices?.length">
+    <div class="mono-terminal continue-label">Debrief options</div>
+    <button
+      type="button"
+      class="continue-btn"
+      *ngFor="let c of question?.choices; let i = index"
+      (click)="continueChoice.emit(i)">
+      {{ c.option }}
+    </button>
+  </div>
+</section>

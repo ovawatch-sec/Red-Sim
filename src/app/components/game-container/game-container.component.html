@@ -1,0 +1,105 @@
+<div class="game-shell matrix-layer">
+  <div class="grid-wrapper">
+    <ng-container *ngIf="vm$ | async as vm">
+      <app-terminal-header
+        [title]="vm.missionInfo.isMissionPack ? (vm.missionInfo.packTitle || 'RED TEAM SIM Mission Pack') : (vm.data?.title || 'RED TEAM SIM v1.0')"
+        [mission]="vm.data?.title || 'Project Chimera'"
+        [status]="vm.state.gameStatus"
+        [hintsRemaining]="vm.state.hintsRemaining"
+        [elapsedSeconds]="vm.elapsedSeconds"
+        [missionCount]="vm.missionInfo.count"
+        [missionIndex]="vm.missionInfo.index"
+        [isMissionPack]="vm.missionInfo.isMissionPack"
+        (reset)="resetGame()"
+        (newMission)="newMission()"
+        (save)="saveGame()"
+        (load)="loadGame()"
+        (exportPath)="exportPath()"
+        (toggleBrief)="showBrief = !showBrief">
+      </app-terminal-header>
+
+      <section class="panel brief" *ngIf="showBrief">
+        <div class="brief-title mono-terminal">MISSION BRIEF</div>
+        <p>{{ getMissionBrief(vm.data, vm.missionInfo.count > 1 ? ((vm.missionInfo.index + 1) + '/' + vm.missionInfo.count) : undefined) }}</p>
+      </section>
+
+      <section class="panel loading" *ngIf="vm.data == null || vm.question == null">
+        <mat-spinner diameter="34"></mat-spinner>
+        <div class="mono-terminal">Loading scenario graph…</div>
+      </section>
+
+      <ng-container *ngIf="vm.data && vm.question as q">
+        <div class="main-layout">
+          <div class="left-col">
+            <app-question-card [question]="q"></app-question-card>
+
+            <div class="toolbar panel">
+              <button mat-stroked-button (click)="requestHint(q)">Use Hint / Toggle Hints</button>
+              <button mat-stroked-button (click)="exportPath()">Export Path</button>
+              <span class="hint-msg mono-terminal" *ngIf="hintMessage">{{ hintMessage }}</span>
+            </div>
+
+            <ng-container *ngIf="!isGameOver(q); else gameOverTpl">
+              <app-choices-grid
+                [choices]="q.choices"
+                [usedChoiceKeys]="vm.state.usedChoiceKeys"
+                [currentQuestionId]="q.id"
+                [probabilities]="vm.probabilities"
+                [showHints]="showHints"
+                (choiceSelected)="onChoiceSelected($event)">
+              </app-choices-grid>
+            </ng-container>
+
+            <ng-template #gameOverTpl>
+              <app-game-over
+                [question]="q"
+                [stats]="vm.stats"
+                (restart)="resetGame()"
+                (exportPath)="exportPath()"
+                (continueChoice)="onGameOverContinue($event)">
+              </app-game-over>
+            </ng-template>
+          </div>
+
+          <div class="right-col">
+            <app-progress-bar
+              [depth]="vm.state.branchDepth"
+              [maxDepth]="vm.maxDepth"
+              [attempts]="vm.state.attempts"
+              [elapsedSeconds]="vm.elapsedSeconds"
+              [hintsRemaining]="vm.state.hintsRemaining"
+              [uniqueVisited]="vm.uniqueVisited">
+            </app-progress-bar>
+
+            <section class="panel telemetry">
+              <div class="mono-terminal section-title">LIVE TELEMETRY</div>
+              <div class="rows">
+                <div><span>&gt; CONNECTION:</span> <strong>SECURE</strong></div>
+                <div><span>&gt; STATUS:</span> <strong>{{ statusBarState(q, vm.state.gameStatus) }}</strong></div>
+                <div><span>&gt; MISSION:</span> <strong>{{ vm.missionInfo.index + 1 }}/{{ vm.missionInfo.count }}</strong></div>
+                <div><span>&gt; NODE:</span> <strong>{{ q.id }}</strong></div>
+                <div><span>&gt; PATH LEN:</span> <strong>{{ vm.state.pathTaken.length }}</strong></div>
+                <div><span>&gt; UNIQUE:</span> <strong>{{ vm.uniqueVisited }}</strong></div>
+              </div>
+            </section>
+
+            <section class="panel path-log">
+              <div class="mono-terminal section-title">PATH LOG</div>
+              <ol *ngIf="vm.state.pathTaken.length; else noPath">
+                <li *ngFor="let step of vm.state.pathTaken.slice(-8)">{{ step }}</li>
+              </ol>
+              <ng-template #noPath>
+                <div class="mono-terminal muted">No actions yet. Pick a route.</div>
+              </ng-template>
+            </section>
+
+            <section class="panel error-panel" *ngIf="(error$ | async) as err">
+              <div class="text-red mono-terminal">ERROR</div>
+              <div>{{ err }}</div>
+            </section>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.left { min-width: 0; }
+.ascii {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.meta {
+  margin-top: .35rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  color: rgba(0,255,0,.85);
+  font-size: .85rem;
+}
+.dot {
+  width: .6rem;
+  height: .6rem;
+  border-radius: 999px;
+  display: inline-block;
+  margin-top: .25rem;
+  background: #39ff14;
+  box-shadow: 0 0 8px rgba(57,255,20,.65);
+}
+.dot.fail { background: #ff4444; box-shadow: 0 0 8px rgba(255,68,68,.65); }
+.dot.win { background: #00ff00; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+
+:host ::ng-deep .mat-mdc-outlined-button,
+:host ::ng-deep .mat-mdc-unelevated-button {
+  color: #00ff00 !important;
+  border-color: rgba(0,255,0,.35) !important;
+  background: rgba(0, 20, 0, .25);
+}
+
+:host ::ng-deep .mat-mdc-unelevated-button.mat-warn {
+  color: #fff !important;
+  background: rgba(255,68,68,.15);
+}
+
+@media (max-width: 900px) {
+  .terminal-header {
+    flex-direction: column;
+  }
+  .actions { justify-content: flex-start; }
+}

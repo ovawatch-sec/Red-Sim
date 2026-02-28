@@ -1,8 +1,10 @@
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using GameModels;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -14,7 +16,7 @@ namespace api
   public class GameFileApiTrigger
   {
     private const string ContainerName = "ovawatch";
-    private const string BlobName = "red-sim-data.json";
+    private const string BlobName = "game-data-missions.json";
 
     [Function("GameFileApiTrigger")]
     public static async Task<HttpResponseData> Run(
@@ -48,16 +50,12 @@ namespace api
 
           // Return cached content
           var download = await blobClient.DownloadContentAsync();
-          var cachedContent = download.Value.Content.ToString();
-
-          // parse the scenarios
-          var scenarios = JsonSerializer.Deserialize<List<ScenarioData>>(cachedContent);
-
-          // fetch random scenario
-          var scenario = ScenarioHelper.GetRandomScenario(scenarios);
+          var cachedContent = download.Value.Content.ToObjectFromJson<GameDataEnvelope>(
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+          );
 
           var cachedResponse = req.CreateResponse(HttpStatusCode.OK);
-          await cachedResponse.WriteAsJsonAsync(scenario);
+          await cachedResponse.WriteAsJsonAsync(cachedContent);
 
           logger.LogInformation("Served from cache");
           return cachedResponse;

@@ -1,0 +1,23 @@
+.question-card {
+  padding: 1rem 1rem 0.9rem;
+  position: relative;
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+.question-card.important {
+  box-shadow: 0 0 16px rgba(57,255,20,.2);
+  border-color: rgba(57,255,20,.7);
+}
+.question-card.outcome {
+  border-color: rgba(0,255,0,.25);
+}
+.qid {
+  color: rgba(0,255,0,.75);
+  margin-bottom: .55rem;
+  font-size: .85rem;
+}
+.question-text {
+  margin: 0;
+  line-height: 1.5;
+  color: #d0ffd0;
+  min-height: 3.2rem;
+}

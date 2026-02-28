@@ -1,0 +1,10 @@
+<section class="panel progress-wrap">
+  <div class="labels mono-terminal">
+    <span>BRANCH DEPTH: {{ depth }}/{{ maxDepth }}</span>
+    <span>UNIQUE NODES: {{ uniqueVisited }}</span>
+    <span>ATTEMPTS: {{ attempts }}</span>
+    <span>TIME: {{ elapsedSeconds }}s</span>
+    <span>HINTS LEFT: {{ hintsRemaining }}</span>
+  </div>
+  <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+</section>

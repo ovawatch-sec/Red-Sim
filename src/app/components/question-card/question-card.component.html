@@ -1,0 +1,4 @@
+<section class="panel question-card" [class.important]="isImportant" [class.outcome]="isOutcome">
+  <div class="qid mono-terminal">[ {{ question?.id || '...' }} ]</div>
+  <p class="cursor-blink question-text mono-terminal">{{ displayedText }}</p>
+</section>

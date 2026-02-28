@@ -1,0 +1,41 @@
+<header class="panel terminal-header">
+  <div class="left">
+    <div class="ascii mono-terminal green-glow">[[ {{ title }} ]]</div>
+    <div class="meta">
+      <span class="dot" [class.fail]="status==='failed'" [class.win]="status==='won'"></span>
+      <span class="mono-terminal">STATUS: {{ statusLabel }}</span>
+      <span class="sep">|</span>
+      <span class="mono-terminal">MISSION: {{ mission }}</span>
+      <span class="sep" *ngIf="isMissionPack">|</span>
+      <span class="mono-terminal" *ngIf="isMissionPack">PACK SLOT: {{ missionSlotLabel }}</span>
+      <span class="sep">|</span>
+      <span class="mono-terminal">HINTS: {{ hintsRemaining }}</span>
+      <span class="sep">|</span>
+      <span class="mono-terminal">TIME: {{ elapsedSeconds }}s</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button mat-stroked-button color="primary" (click)="toggleBrief.emit()">Mission Brief</button>
+    <button mat-stroked-button color="primary" *ngIf="isMissionPack" (click)="newMission.emit()">
+      <mat-icon>shuffle</mat-icon>
+      New Mission
+    </button>
+    <button mat-stroked-button color="primary" (click)="save.emit()">
+      <mat-icon>save</mat-icon>
+      Save
+    </button>
+    <button mat-stroked-button color="primary" (click)="load.emit()">
+      <mat-icon>upload</mat-icon>
+      Load
+    </button>
+    <button mat-stroked-button color="primary" (click)="exportPath.emit()">
+      <mat-icon>download</mat-icon>
+      Export Path
+    </button>
+    <button mat-flat-button color="warn" (click)="reset.emit()">
+      <mat-icon>restart_alt</mat-icon>
+      Reset
+    </button>
+  </div>
+</header>
