@@ -1,4 +1,17 @@
-<section class="panel question-card" [class.important]="isImportant" [class.outcome]="isOutcome">
-  <div class="qid mono-terminal">[ {{ question?.id || '...' }} ]</div>
-  <p class="cursor-blink question-text mono-terminal">{{ displayedText }}</p>
+<section class="panel question-card" [class.important]="isImportant" [class.outcome]="isOutcome" (click)="onCardClick()">
+  <div class="card-top">
+    <div class="identity">
+      <div class="qid mono-terminal">Node {{ question?.id || '...' }}</div>
+      <span class="phase-pill">{{ phaseLabel }}</span>
+    </div>
+    <button type="button" class="reveal-btn mono-terminal" *ngIf="isTyping" (click)="revealImmediately(); $event.stopPropagation()">
+      reveal
+    </button>
+  </div>
+
+  <p class="question-text mono-terminal" [class.typing]="isTyping">{{ displayedText }}</p>
+
+  <div class="microcopy" *ngIf="isTyping">
+    Press Enter or tap the card to reveal the full prompt immediately.
+  </div>
 </section>

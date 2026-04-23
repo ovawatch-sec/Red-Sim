@@ -11,15 +11,23 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
+  private readonly apiUrl = `${environment.apiUrl}/scenario`;
+  private readonly localUrl = 'assets/data/game-data.json';
+
   constructor(private readonly http: HttpClient) {}
-  //private url = `${environment.apiUrl}/scenario`;
-   private url = `${environment.apiUrl}/scenario`;
+
   loadGameData(): Observable<GameLoadResult> {
-    return this.http.get<GameDataEnvelope>(this.url).pipe(
+    return this.http.get<GameDataEnvelope>(this.apiUrl).pipe(
       map((res) => this.normalizeEnvelope(res)),
-      catchError((err) => {
-        console.error('Failed to load game data', err);
-        return throwError(() => new Error('Unable to load game-data.json'));
+      catchError((apiErr) => {
+        console.warn('Primary scenario API unavailable, falling back to bundled data.', apiErr);
+        return this.http.get<GameDataEnvelope>(this.localUrl).pipe(
+          map((res) => this.normalizeEnvelope(res)),
+          catchError((localErr) => {
+            console.error('Failed to load scenario data from API and bundled asset.', localErr);
+            return throwError(() => new Error('Unable to load mission data from the API or bundled asset.'));
+          }),
+        );
       }),
     );
   }

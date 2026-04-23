@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, combineLatest, map, Observable, of, tap, throwError } from 'rxjs';
-import { Choice, GameData, GameLoadResult, GameState, GameStatistics, Question } from '../models/game.models';
+import { Choice, GameData, GameLoadResult, GameState, GameStatistics, MissionOption, Question } from '../models/game.models';
 import { DataService } from './data.service';
 
 const STORAGE_KEY = 'acheron-red-team-sim-state-v2';
@@ -118,6 +118,24 @@ export class GameService {
 
   getMissionCount(): number {
     return this.allGames.length || 1;
+  }
+
+  getMissionCatalog(): MissionOption[] {
+    return this.allGames.map((game) => ({
+      id: this.getGameKey(game),
+      title: game.title,
+      description: game.description,
+      sector: game.sector,
+      difficulty: game.difficulty
+    }));
+  }
+
+  getPackTitle(): string | undefined {
+    return this.packTitle;
+  }
+
+  getPackDescription(): string | undefined {
+    return this.packDescription;
   }
 
   startNewMission(): GameData | null {

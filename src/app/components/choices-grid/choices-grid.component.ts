@@ -26,7 +26,7 @@ export class ChoicesGridComponent {
   @HostListener('document:keydown', ['$event'])
   onKeydown(ev: KeyboardEvent): void {
     const n = Number(ev.key);
-    if (Number.isNaN(n) || n < 1 || n > 4) return;
+    if (Number.isNaN(n) || n < 1 || n > 9) return;
     const idx = n - 1;
     if (idx >= this.choices.length) return;
     const choice = this.choices[idx];
@@ -48,5 +48,20 @@ export class ChoicesGridComponent {
 
   choiceKey(choice: Choice): string {
     return `${this.currentQuestionId}::${choice.option}`;
+  }
+
+  confidenceLabel(choice: Choice): string {
+    const probability = this.probabilities[choice.option] ?? 0;
+    if (choice.isFailure || probability <= 20) return 'High exposure';
+    if (choice.isWin || probability >= 70) return 'Strong route';
+    if (probability >= 45) return 'Balanced route';
+    return 'Speculative';
+  }
+
+  tone(choice: Choice): string {
+    const probability = this.probabilities[choice.option] ?? 0;
+    if (choice.isFailure || probability <= 20) return 'danger';
+    if (choice.isWin || probability >= 70) return 'success';
+    return 'neutral';
   }
 }

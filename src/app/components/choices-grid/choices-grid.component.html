@@ -5,24 +5,37 @@
     *ngFor="let choice of choices; let i = index"
     [disabled]="isDisabled(choice)"
     [class.used]="isUsed(choice)"
-    [class.fail]="choice.isFailure"
-    [class.win]="choice.isWin"
+    [class.fail]="tone(choice) === 'danger'"
+    [class.win]="tone(choice) === 'success'"
     (click)="select(choice)"
   >
-    <div class="choice-index mono-terminal">{{ i + 1 }}</div>
-    <div class="choice-text">{{ choice.option }}</div>
-    <div class="hint-row mono-terminal" *ngIf="showHints">
-      <span>Success est:</span>
-      <span>{{ probabilities[choice.option] }}%</span>
+    <div class="choice-top">
+      <div class="choice-key mono-terminal">{{ i + 1 }}</div>
+      <span class="choice-tone">{{ showHints ? confidenceLabel(choice) : 'Decision option' }}</span>
     </div>
-    <div class="hint-text mono-terminal" *ngIf="showHints && choice.hint">
-      {{ choice.hint }}
+
+    <div class="choice-text">{{ choice.option }}</div>
+
+    <div class="hint-stack" *ngIf="showHints">
+      <div class="hint-row mono-terminal">
+        <span>Success estimate</span>
+        <strong>{{ probabilities[choice.option] || 0 }}%</strong>
+      </div>
+      <div class="hint-text mono-terminal" *ngIf="choice.hint">
+        {{ choice.hint }}
+      </div>
+    </div>
+
+    <div class="choice-footer">
+      <span class="footer-label" *ngIf="isUsed(choice)">already tested</span>
+      <span class="footer-label" *ngIf="!isUsed(choice)">press {{ i + 1 }}</span>
+      <span class="footer-arrow">→</span>
     </div>
   </button>
 </div>
 
 <ng-template #noChoices>
   <div class="terminal-note mono-terminal">
-    No actions available. Awaiting debrief…
+    No actions available. Awaiting debrief.
   </div>
 </ng-template>

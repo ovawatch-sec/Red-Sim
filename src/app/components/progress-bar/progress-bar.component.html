@@ -1,10 +1,29 @@
 <section class="panel progress-wrap">
-  <div class="labels mono-terminal">
-    <span>BRANCH DEPTH: {{ depth }}/{{ maxDepth }}</span>
-    <span>UNIQUE NODES: {{ uniqueVisited }}</span>
-    <span>ATTEMPTS: {{ attempts }}</span>
-    <span>TIME: {{ elapsedSeconds }}s</span>
-    <span>HINTS LEFT: {{ hintsRemaining }}</span>
+  <div class="top-row">
+    <div>
+      <div class="eyebrow mono-terminal">Operation progress</div>
+      <div class="headline">{{ progress }}% through best-known path</div>
+    </div>
+    <div class="mini-stats mono-terminal">
+      <span>{{ depth }}/{{ maxDepth }} depth</span>
+      <span>{{ uniqueVisited }} unique nodes</span>
+    </div>
   </div>
+
   <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+
+  <div class="labels">
+    <div class="label-card">
+      <span>Attempts</span>
+      <strong>{{ attempts }}</strong>
+    </div>
+    <div class="label-card">
+      <span>Elapsed</span>
+      <strong>{{ elapsedSeconds }}s</strong>
+    </div>
+    <div class="label-card">
+      <span>Hints left</span>
+      <strong>{{ hintsRemaining }}</strong>
+    </div>
+  </div>
 </section>

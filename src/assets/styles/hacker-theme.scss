@@ -1,59 +1,63 @@
 :root {
-  --matrix-green: #00ff00;
-  --neon-green: #39ff14;
-  --dark-bg: #0a0a0a;
-  --void-bg: #000000;
-  --danger: #ff4444;
-  --warning: #ffaa00;
-  --text: #00ff00;
-  --neon-glow: 0 0 10px rgba(0, 255, 0, 0.35);
-  --danger-glow: 0 0 10px rgba(255, 68, 68, 0.3);
+  --bg-base: #070b12;
+  --bg-elevated: #0d121c;
+  --bg-soft: rgba(14, 19, 28, 0.78);
+  --panel-border: rgba(120, 136, 160, 0.14);
+  --text-primary: #ecf2ff;
+  --text-secondary: #b2bfd6;
+  --text-muted: #7f8aa0;
+  --accent: #58a6ff;
+  --accent-soft: #8ac4ff;
+  --danger: #ff5b6b;
+  --warning: #ffb86b;
+  --success: #47c797;
+  --shadow-lg: 0 30px 70px rgba(0, 0, 0, 0.35);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top right, rgba(255, 91, 107, 0.08), transparent 24%),
+    radial-gradient(circle at left bottom, rgba(88, 166, 255, 0.09), transparent 24%),
+    linear-gradient(180deg, #070b12 0%, #090d15 100%);
 }
 
 .mono-terminal {
-  font-family: "Share Tech Mono", "Courier New", monospace;
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 .green-glow {
-  text-shadow: 0 0 8px rgba(0, 255, 0, 0.25);
+  text-shadow: 0 0 18px rgba(88, 166, 255, 0.22);
 }
 
 .matrix-layer {
   position: relative;
   overflow: hidden;
-  background: radial-gradient(circle at top, rgba(0,255,0,0.05), transparent 45%), #000;
+  background: transparent;
 }
 
 .matrix-layer::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0,255,0,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,0,0.02) 1px, transparent 1px);
-  background-size: 100% 24px, 24px 100%;
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 100% 36px, 36px 100%;
   pointer-events: none;
-  animation: gridDrift 18s linear infinite;
-  opacity: 0.5;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 110%);
 }
 
 .matrix-layer::after {
   content: "";
-  position: absolute;
-  inset: -100% 0 0 0;
-  background: linear-gradient(180deg, transparent, rgba(0,255,0,0.06), transparent);
+  position: fixed;
+  inset: 0;
   pointer-events: none;
-  animation: matrixRain 13s linear infinite;
-}
-
-@keyframes matrixRain {
-  from { transform: translateY(-35%); }
-  to { transform: translateY(65%); }
-}
-
-@keyframes gridDrift {
-  from { background-position: 0 0, 0 0; }
-  to { background-position: 0 24px, 24px 0; }
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 24%);
+  opacity: 0.55;
 }
 
 .cursor-blink::after {
@@ -67,9 +71,23 @@
 }
 
 .panel {
-  border: 1px solid rgba(0,255,0,0.45);
-  background: rgba(10, 10, 10, 0.85);
-  box-shadow: var(--neon-glow);
-  border-radius: 14px;
-  backdrop-filter: blur(4px);
+  border: 1px solid var(--panel-border);
+  background: linear-gradient(180deg, rgba(12, 16, 24, 0.92), rgba(10, 14, 21, 0.9));
+  box-shadow: var(--shadow-lg);
+  border-radius: 24px;
+  backdrop-filter: blur(18px);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 136, 160, 0.2);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(9, 12, 18, 0.72);
 }

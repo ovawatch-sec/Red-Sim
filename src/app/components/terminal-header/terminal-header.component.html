@@ -1,41 +1,66 @@
 <header class="panel terminal-header">
-  <div class="left">
-    <div class="ascii mono-terminal green-glow">[[ {{ title }} ]]</div>
-    <div class="meta">
-      <span class="dot" [class.fail]="status==='failed'" [class.win]="status==='won'"></span>
-      <span class="mono-terminal">STATUS: {{ statusLabel }}</span>
-      <span class="sep">|</span>
-      <span class="mono-terminal">MISSION: {{ mission }}</span>
-      <span class="sep" *ngIf="isMissionPack">|</span>
-      <span class="mono-terminal" *ngIf="isMissionPack">PACK SLOT: {{ missionSlotLabel }}</span>
-      <span class="sep">|</span>
-      <span class="mono-terminal">HINTS: {{ hintsRemaining }}</span>
-      <span class="sep">|</span>
-      <span class="mono-terminal">TIME: {{ elapsedSeconds }}s</span>
+  <div class="headline">
+    <div class="eyebrow mono-terminal">AUTHORIZED RED TEAM EXERCISE</div>
+    <div class="title-row">
+      <div>
+        <h1>{{ mission }}</h1>
+        <p>{{ title }}</p>
+      </div>
+
+      <div class="status-pill" [class.success]="statusTone === 'success'" [class.danger]="statusTone === 'danger'">
+        <span class="pulse"></span>
+        <span>{{ statusLabel }}</span>
+      </div>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-chip">
+        <span class="label">Hints</span>
+        <strong>{{ hintsRemaining }}</strong>
+      </div>
+      <div class="meta-chip">
+        <span class="label">Elapsed</span>
+        <strong>{{ elapsedSeconds }}s</strong>
+      </div>
+      <div class="meta-chip" *ngIf="isMissionPack">
+        <span class="label">Pack slot</span>
+        <strong>{{ missionSlotLabel }}</strong>
+      </div>
+      <label class="mission-select" *ngIf="isMissionPack && missionOptions.length > 1">
+        <span class="label">Mission</span>
+        <select [value]="currentMissionId" (change)="onMissionChange($event)">
+          <option *ngFor="let option of missionOptions" [value]="option.id">
+            {{ option.title }}
+          </option>
+        </select>
+      </label>
     </div>
   </div>
 
   <div class="actions">
-    <button mat-stroked-button color="primary" (click)="toggleBrief.emit()">Mission Brief</button>
-    <button mat-stroked-button color="primary" *ngIf="isMissionPack" (click)="newMission.emit()">
-      <mat-icon>shuffle</mat-icon>
-      New Mission
+    <button mat-stroked-button (click)="toggleBrief.emit()">
+      <mat-icon>fact_check</mat-icon>
+      Brief
     </button>
-    <button mat-stroked-button color="primary" (click)="save.emit()">
+    <button mat-stroked-button *ngIf="isMissionPack" (click)="newMission.emit()">
+      <mat-icon>shuffle</mat-icon>
+      Shuffle
+    </button>
+    <button mat-stroked-button (click)="save.emit()">
       <mat-icon>save</mat-icon>
       Save
     </button>
-    <button mat-stroked-button color="primary" (click)="load.emit()">
-      <mat-icon>cloud_upload</mat-icon>
-      Load
+    <button mat-stroked-button (click)="load.emit()">
+      <mat-icon>history</mat-icon>
+      Restore
     </button>
-    <button mat-stroked-button color="primary" (click)="exportPath.emit()">
+    <button mat-stroked-button (click)="exportPath.emit()">
       <mat-icon>download</mat-icon>
-      Export Path
+      Export
     </button>
     <button mat-flat-button color="warn" (click)="reset.emit()">
       <mat-icon>replay</mat-icon>
-      Reset
+      Restart
     </button>
   </div>
 </header>

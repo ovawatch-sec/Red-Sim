@@ -12,6 +12,7 @@ export interface Question {
   choices: Choice[];
   result?: "win" | "fail" | "partial" | "intel";
   flag?: string;
+  phase?: string;
 }
 
 export interface GameMissionBrief {
@@ -29,6 +30,11 @@ export interface GameData {
   missionBrief?: GameMissionBrief;
   startQuestionId: string;
   questions: Question[];
+  sector?: string;
+  organization?: string;
+  domain?: string;
+  difficulty?: string;
+  theme?: string;
 }
 
 export interface MissionPackGame extends GameData {
@@ -79,4 +85,12 @@ export interface GameStatistics {
   hintsUsed: number;
   pathTaken: string[];
   achievements: string[];
+}
+
+export interface MissionOption {
+  id: string;
+  title: string;
+  description: string;
+  sector?: string;
+  difficulty?: string;
 }
